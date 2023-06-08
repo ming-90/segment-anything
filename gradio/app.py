@@ -28,6 +28,9 @@ with gr.Blocks() as app:
         output_img = gr.Image(label="Output image").style(height=500)
 
     with gr.Row():
+        embedding_file = gr.File(type="file", label="SAM Embedding")
+
+    with gr.Row():
         coord_x = gr.Number(label="Mouse coords x")
         coord_y = gr.Number(label="Mouse coords y")
 
@@ -40,12 +43,13 @@ with gr.Blocks() as app:
     gr.Examples(
         examples=[
             [
-                os.path.join(os.path.dirname(__file__), "examples/strawberry.png"),
+                os.path.join(os.path.dirname(__file__), "examples/images/strawberry.png"),
+                os.path.join(os.path.dirname(__file__), "examples/embeddings/strawberry.npy"),
                 327,
                 467
             ]
         ],
-        inputs=[input_img, coord_x, coord_y],
+        inputs=[input_img, embedding_file, coord_x, coord_y],
         outputs=output_img
     )
 
