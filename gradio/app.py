@@ -35,12 +35,17 @@ with gr.Blocks() as app:
             output_img = gr.Image(label="Output image").style(height=500)
 
         with gr.Row():
-            embedding_file = gr.File(type="file", label="SAM Embedding")
-
-        with gr.Row():
             coord_x = gr.Number(label="Mouse coords x")
             coord_y = gr.Number(label="Mouse coords y")
 
+        with gr.Row():
+            embedding_file = gr.File(label="image embedding file", type="file")
+
+        input_img.select(get_coords, None, [coord_x, coord_y]).then(
+            image_click,
+            [input_img, coord_x, coord_y],
+            output_img
+        )
 
         gr.Examples(
             examples=[
