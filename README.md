@@ -12,6 +12,15 @@ dockerize this to quickly test the SAM.
 - Dockerize server
 - Create Docker compose
 
+## How to use
+### Client run
+```bash
+
+```
+### Server run
+```bash
+PYTHONPATH=src python3 -m uvicorn server.main:app --host 0.0.0.0 --port 8888 --reload
+```
 
 ## References
 - https://github.com/facebookresearch/segment-anything
