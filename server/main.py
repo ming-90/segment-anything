@@ -1,31 +1,35 @@
+import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
+from server.sam import SAMImageEncoder
 
-# pylint: disable=invalid-name,unused-argument
-def create_app() -> FastAPI:
-    """Create a fastapi app instance."""
+from server.utils.logger import get_logger
 
-    app_instance = FastAPI()
+###################
+# Settings
+###################
 
-    origins = ["*"]
-    app_instance.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-    return app_instance
+logger = get_logger()
 
-app = create_app()
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# Healthcheck
-@app.get("/healthcheck")
-def healthcheck() -> bool:
-    """Server health check."""
-    return True
+configs = dict(
+    checkpoint_path=os.path.join("checkpoint"),
+    checkpoint_name="sam_vit_h_4b8939.pth",
+    checkpoint_url="https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth",
+    model_type="default",
+)
+
+SAMImageEncoder(**configs)
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
@@ -35,6 +39,17 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
+###################
+# APIs
+###################
+
+# Healthcheck
+@app.get("/healthcheck")
+def healthcheck() -> bool:
+    """Server health check."""
+    return True
+
+
 # pylint: disable=invalid-name,unused-argument
 @app.get("/", response_class=HTMLResponse)
 async def read_users(request: Request) -> Request:
@@ -42,3 +57,13 @@ async def read_users(request: Request) -> Request:
     context["request"] = request
 
     return templates.TemplateResponse("index.html", context)
+
+# pylint: disable=invalid-name,unused-argument
+@app.get("/image-embedding", response_class=HTMLResponse)
+async def image_embedding(request: Request) -> Request:
+    context = {}
+    context["request"] = request
+
+    sam = SAMImageEncoder()
+
+    return ""
