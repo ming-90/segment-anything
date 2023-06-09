@@ -1,2 +1,5 @@
 flagged
-*/__pycache__
+__pycache__
+.DS_Store
+.mypy_cache
+.pytest_cache
