@@ -3,10 +3,14 @@
 """
 import os
 import gradio as gr
+import numpy as np
 
-##################################
+####################
 # Functions
-##################################
+####################
+def get_image_embedding(image: np.ndarray):
+    print("ASD")
+
 def get_coords(evt: gr.SelectData):
     print(f"x: {evt.index[1]} y: {evt.index[0]}")
     return evt.index[1], evt.index[0]
@@ -18,12 +22,10 @@ def image_click(
 ):
     print(coord_x, coord_y)
 
-def get_image_embedding():
-    print("ASD")
 
-##################################
+####################
 # Gradio UI
-##################################
+####################
 
 with gr.Blocks() as app:
     with gr.Tab("SAM"):

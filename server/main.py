@@ -1,9 +1,9 @@
 import os
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
-from server.sam import SAMImageEncoder
+from server.sam import SAMImageEncoder, SegmentationImageEmbeddingResponse
 
 from server.utils.logger import get_logger
 
@@ -29,7 +29,7 @@ configs = dict(
     model_type="default",
 )
 
-SAMImageEncoder(**configs)
+sam_image_encoder = SAMImageEncoder(**configs)
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
@@ -51,19 +51,14 @@ def healthcheck() -> bool:
 
 
 # pylint: disable=invalid-name,unused-argument
-@app.get("/", response_class=HTMLResponse)
-async def read_users(request: Request) -> Request:
-    context = {}
-    context["request"] = request
+@app.get("/image-embedding", response_model=SegmentationImageEmbeddingResponse)
+async def image_embedding(
+    file: UploadFile
+) -> SegmentationImageEmbeddingResponse:
+    logger.info("Create SAM image embedding.")
+    try:
+        sam = await sam_image_encoder.run(file)
+    except Exception as e:
+        logger.error(e)
 
-    return templates.TemplateResponse("index.html", context)
-
-# pylint: disable=invalid-name,unused-argument
-@app.get("/image-embedding", response_class=HTMLResponse)
-async def image_embedding(request: Request) -> Request:
-    context = {}
-    context["request"] = request
-
-    sam = SAMImageEncoder()
-
-    return ""
+    return SegmentationImageEmbeddingResponse(**sam)
