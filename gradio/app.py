@@ -1,11 +1,9 @@
-"""
-
-"""
 import os
 import gradio as gr
 import numpy as np
 import requests
 import cv2
+import base64
 
 ####################
 # Settings
@@ -34,7 +32,16 @@ def get_image_embedding(image: np.ndarray):
         files={"file":image_bytes},
         headers={"accept": "application/json"}
     )
-    return response.json()["image_embedding"]
+    resp = response.json()
+
+    image_embedding = base64.b64decode(resp["image_embedding"])
+    image_embedding = np.frombuffer(image_embedding, dtype=np.float32)
+
+    os.makedirs("embeddings", exist_ok=True)
+    filepath = "embeddings/image_embedding.npy"
+    np.save(filepath, image_embedding)
+
+    return filepath
 
 
 ####################
