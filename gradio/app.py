@@ -4,13 +4,17 @@
 import os
 import gradio as gr
 import numpy as np
+import requests
+import cv2
+
+####################
+# Settings
+####################
+API_URL = os.environ.get("API_SERVER_URL", "http://localhost:8888")
 
 ####################
 # Functions
 ####################
-def get_image_embedding(image: np.ndarray):
-    print("ASD")
-
 def get_coords(evt: gr.SelectData):
     print(f"x: {evt.index[1]} y: {evt.index[0]}")
     return evt.index[1], evt.index[0]
@@ -21,6 +25,16 @@ def image_click(
     coord_y,
 ):
     print(coord_x, coord_y)
+
+
+def get_image_embedding(image: np.ndarray):
+    image_bytes = cv2.imencode(".jpg", image)[1].tobytes()
+    response = requests.get(
+        f'{API_URL}/image-embedding',
+        files={"file":image_bytes},
+        headers={"accept": "application/json"}
+    )
+    return response.json()["image_embedding"]
 
 
 ####################

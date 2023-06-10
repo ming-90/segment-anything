@@ -1,11 +1,14 @@
 PYTHON=3.9
-BASENAME=mlwiz-apis-server
+BASENAME=segment-anything
 
 env:
 	conda create -n $(BASENAME)  python=$(PYTHON) -y
 
-gradio:
+setup:
+	pip install -r requirements.txt
+
+run-gradio:
 	python gradio/app.py
 
-server:
+run-server:
 	PYTHONPATH=src python3 -m uvicorn server.main:app --host 0.0.0.0 --port 8888 --reload
