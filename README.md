@@ -14,13 +14,13 @@ dockerize this to quickly test the SAM.
 - Create Docker compose
 
 ## How to use
-### Client run
+### Gradio run
 ```bash
-
+make gradio
 ```
 ### Server run
 ```bash
-PYTHONPATH=src python3 -m uvicorn server.main:app --host 0.0.0.0 --port 8888 --reload
+make server
 ```
 
 ## References
