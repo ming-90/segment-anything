@@ -5,6 +5,7 @@ Implement the [segment anything model (SAM)](https://github.com/facebookresearch
 dockerize this to quickly test the SAM.
 
 ## Task
+- Implementation Segment Anything Model image embedding (Done)
 - Implementation Segment Anything Model using Gradio
 - Create frontend UI for SAM ( Hover, Click inference)
 - Create backend for SAM image embedding
