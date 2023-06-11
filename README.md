@@ -5,7 +5,7 @@ dockerize this to quickly test the SAM.
 
 ## Task
 - Implementation Segment Anything Model image embedding API (Done)
-- Implementation Segment Anything Model using Gradio
+- Implementation Segment Anything Model using Gradio (Done)
 - Create frontend UI for SAM ( Hover, Click inference )
 - Create triton and inference server
 - Dockerize server

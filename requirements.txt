@@ -1,9 +1,14 @@
 gradio ==  3.34.0
 uvicorn == 0.22.0
 
+# ML
 opencv-python == 4.7.0.72
 torch == 2.0.1
 git+https://github.com/facebookresearch/segment-anything.git
 torchvision == 0.15.2
 python-multipart == 0.0.6
 onnxruntime == 1.15.0
+
+# Backend
+jinja2==3.1.2
+ninja==1.11.1
