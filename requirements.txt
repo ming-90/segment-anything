@@ -6,3 +6,4 @@ torch == 2.0.1
 git+https://github.com/facebookresearch/segment-anything.git
 torchvision == 0.15.2
 python-multipart == 0.0.6
+onnxruntime == 1.15.0
