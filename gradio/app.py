@@ -4,6 +4,13 @@ import numpy as np
 import requests
 import cv2
 import base64
+import onnxruntime as ort
+
+# OnnxRuntime
+sess_options = ort.SessionOptions()
+sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+sess_options.intra_op_num_threads = min(8, multiprocessing.cpu_count() // 2)
+ort_sess = ort.InferenceSession("sam_onnx_quantized.onnx", sess_options)
 
 ####################
 # Settings
@@ -97,9 +104,6 @@ with gr.Blocks() as app:
             inputs=image,
             outputs=image_embedding_file,
         )
-
-
-
 
 if __name__ == "__main__":
     app.queue().launch(server_name="0.0.0.0")

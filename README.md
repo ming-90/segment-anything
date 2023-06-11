@@ -1,5 +1,4 @@
 # Serving Segment Anything Model
-
 ## Description
 Implement the [segment anything model (SAM)](https://github.com/facebookresearch/segment-anything) from meta in Gradio and use html to implement hover and click.
 dockerize this to quickly test the SAM.
