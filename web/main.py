@@ -1,8 +1,10 @@
 import os
+import uvicorn
 from fastapi import FastAPI, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 ###################
 # Settings
@@ -25,6 +27,7 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 templates = Jinja2Templates(directory="web/client")
+app.mount("/sample", StaticFiles(directory="web/client/sample"), name="static")
 
 ###################
 # APIs
@@ -36,8 +39,9 @@ def healthcheck() -> bool:
     """Server health check."""
     return True
 
-@app.get("/", response_class=HTMLResponse)
-async def read_users(request: Request) -> Request:
+# pylint: disable=invalid-name,unused-argument
+@app.get("/")
+async def read_users(request: Request):
     context = {}
     context["request"] = request
 

@@ -10,5 +10,8 @@ setup:
 run-gradio:
 	python gradio/app.py
 
+run-web:
+	PYTHONPATH=src python3 -m uvicorn web.main:app --host 0.0.0.0 --port 8889 --reload
+
 run-server:
 	PYTHONPATH=src python3 -m uvicorn server.main:app --host 0.0.0.0 --port 8888 --reload
