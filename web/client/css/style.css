@@ -6,3 +6,8 @@ button {width:120px}
 .flex {display: flex;}
 .box {outline-style: solid; height:46px; outline-color: #e5e7eb; border-radius: 0.75rem; padding: 0.5rem 0.75rem 0.5rem 0.75rem; margin-bottom:0.75rem; overflow:hidden }
 .menu-icon{width:20px; height:20px; margin:3px}
+.hover{ height:46px}
+.hover:hover{ height: 130px; transition-property: all; transition-duration: 0.2s; }
+.select-hover{outline-color: #0038B1; height:100% }
+.select{outline-color: #0038B1; height:200px }
+.content-layer{ background-color: #FFFFFF; margin: 0 0 40px 0; font-size: 20px; text-align:left; border-radius: 10px; box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.14118); }
