@@ -1,9 +1,24 @@
 
+let componentSeq = 0
 
 class menuComponent extends HTMLElement{
+    componentEvent(){
+        console.log("ABBB")
+    }
     connectedCallback(){
+        $(this).on("click", function(){
+            let children = $(this).children()
+            if(children.hasClass("select-hover")){
+                children.addClass("hover")
+                children.removeClass("select-hover")
+            }else{
+                children.addClass("select-hover")
+                children.removeClass("hover")
+            }
+            this.componentEvent()
+        })
         this.innerHTML = `
-        <div class="box button-group hover" name="menu_button" id="dot">
+        <div class="box button-group hover" name="menu_button">
             <div class="flex menu-title">
                 <div>
                     <img class="menu-icon" src="/client/icon/mouse.png">
