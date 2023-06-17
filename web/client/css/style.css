@@ -1,0 +1,8 @@
+html {height: 99%}
+body {height: 99%}
+main {height: 99%}
+button {width:120px}
+
+.flex {display: flex;}
+.box {outline-style: solid; height:46px; outline-color: #e5e7eb; border-radius: 0.75rem; padding: 0.5rem 0.75rem 0.5rem 0.75rem; margin-bottom:0.75rem; overflow:hidden }
+.menu-icon{width:20px; height:20px; margin:3px}

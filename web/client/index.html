@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html style="height:100%">
 <head>
+    <link rel="stylesheet" type="text/css" href="/client/css/style.css">
     <!-- onnxruntime-web -->
     <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
     <!-- opencv -->
@@ -10,12 +11,50 @@
     <title>SAM PoC</title>
 </head>
 <body style="width:100%; height:100%">
-    <div id="main" style="position:relative; width:100%; height:100%; margin:30px; background-color: aqua;">
-        <img id="img" src="sample/sample.jpg">
-        <svg id="objectSvg" style="left:0; position:absolute; width:calc(100% - 67px); height:100%" > </svg>
-        <canvas id="maskImg" style="opacity: 0.5; left:0; position:absolute"></canvas>
-        <img id="originImg" style="display:none">
-    </div>
+    <div class="header" style="width:100%; height:150px">
+	</div>
+
+	<div style="display:flex; height:calc(100%-150px) ">
+		<div class="menu">
+			<div class="container px-4">
+				<div class="row gx-5">
+					<div class="col">
+						<div class="p-3 border bg-light content-layer" id="menu-components">
+
+							<div class="flex box button-group" name="">
+								<div>
+									<img class="menu-icon" src="/client/icon/callary.png">
+								</div>
+								<div id="fileButton" style="margin-right:15px">
+									<label>Upload</label>
+								</div>
+								<div>
+									<img class="menu-icon" src="/client/icon/refresh.png">
+								</div>
+								<div id="reset">
+									<label >Reset</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col" id="input-container" style="display:none">
+						<div class="p-3 border bg-light content-layer" id="input-components">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="height:100%; width:100%; margin: 0 0 0 30px" id="frame_main">
+			<div class="" id="main" style="position:relative">
+				<img id="img">
+				<svg id="objectSvg" style="left:0; position:absolute; width:calc(100% - 67px); height:100%" > </svg>
+				<canvas id="maskImg" style="opacity: 0.5; left:0; position:absolute"></canvas>
+				<img id="originImg" style="display:none">
+			</div>
+		</div>
+
+	<input type="file" id="fileUploader" style="display: none;">
 </body>
 <script>
     const imgCanvas = document.getElementById("imgCanvas")
