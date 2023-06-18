@@ -28,6 +28,7 @@ async def add_process_time_header(request: Request, call_next):
 
 templates = Jinja2Templates(directory="web/client")
 app.mount("/client", StaticFiles(directory="web/client/"), name="static")
+app.mount("/model", StaticFiles(directory="web/assets/"), name="static")
 
 ###################
 # APIs

@@ -1,4 +1,9 @@
+
 export let imgShape
+export let tensor
+export let model
+let distanceWidth = 320
+let distanceHeight = 150
 
 export const imageReset = () => {
     let today = new Date();
@@ -8,8 +13,8 @@ export const imageReset = () => {
 
 const resizeImage = () => {
     // $("#maskImg").css("display", "none")
-    const image_frame_width = window.innerWidth - 300
-    const image_frame_height = window.innerHeight - 150
+    const image_frame_width = window.innerWidth - distanceWidth
+    const image_frame_height = window.innerHeight - distanceHeight
     const img_width = $("#img").css("width").replace("px", "") * 1
     const img_height = $("#img").css("height").replace("px", "") * 1
 
@@ -31,6 +36,36 @@ const resizeImage = () => {
         $("#objectSvg").css("width", $("#img").css("width").replace("px", ""))
         $("#objectSvg").css("height", $("#img").css("height").replace("px", ""))
     }
+}
+
+export const mouseEvents = () => {
+    $("body").on("mouseup", function(e){
+        let X = e.pageX - distanceHeight
+        let Y = e.pageY - distanceWidth
+        console.log(X,Y)
+    })
+
+    $("body").on("mousemove", function(e){
+        let X = e.pageX - distanceHeight
+        let Y = e.pageY - distanceWidth
+        console.log(X,Y)
+    })
+}
+
+export const samInit = async () => {
+    const MODEL_DIR = "/model/sam_decoder_uint8.onnx";
+    model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"));
+
+    // const imageUrl = "frontend/image/default.png";
+    // const response = await fetch(imageUrl);
+    // const data = await response.blob();
+    // imageFile = new File([data], "default.png", { type: 'image/png' });
+
+    const IMAGE_EMBEDDING = "/model/embedding.npy";
+    NumpyLoader.ajax(IMAGE_EMBEDDING, function (e) {
+        tensor = new ort.Tensor("float32", e.data, e.shape);
+        console.log("image embedding loaded")
+    })
 }
 
 window.addEventListener(`resize`, resizeImage);

@@ -1,7 +1,7 @@
 
 let componentSeq = 0
 
-class menuComponent extends HTMLElement{
+export class menuComponent extends HTMLElement{
     componentEvent(){
         console.log("ABBB")
     }
@@ -37,5 +37,3 @@ class menuComponent extends HTMLElement{
         `
     }
 }
-
-export {menuComponent}
