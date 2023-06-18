@@ -2,6 +2,7 @@
 export let imgShape
 export let tensor
 export let model
+export let isHover = false
 let distanceWidth = 320
 let distanceHeight = 150
 
@@ -42,13 +43,15 @@ export const mouseEvents = () => {
     $("body").on("mouseup", function(e){
         let X = e.pageX - distanceHeight
         let Y = e.pageY - distanceWidth
-        console.log(X,Y)
+        console.log("mouse up")
     })
 
     $("body").on("mousemove", function(e){
         let X = e.pageX - distanceHeight
         let Y = e.pageY - distanceWidth
-        console.log(X,Y)
+        if(!isHover) return
+        console.log("mouse move")
+        hoverMouseMove()
     })
 }
 
@@ -66,6 +69,32 @@ export const samInit = async () => {
         tensor = new ort.Tensor("float32", e.data, e.shape);
         console.log("image embedding loaded")
     })
+}
+
+const hoverMouseMove = async (coor) => {
+    if (!isHover) return
+    const { height, width, samScale } = handleImageScale();
+    let modelScale = {
+        samScale: samScale,
+        height: height,
+        width: width
+    }
+    let click = {
+        x: coor[0],
+        y: coor[1],
+        clickType: 1
+    }
+    let clicks = [click]
+
+    const feeds = modelData({
+        clicks,
+        tensor,
+        modelScale,
+    });
+    if (feeds === undefined) return
+    const results = await model.run(feeds)
+    const output = results[model.outputNames[0]]
+    onnxMaskToImage(output.data, output.dims[2], output.dims[3])
 }
 
 window.addEventListener(`resize`, resizeImage);
