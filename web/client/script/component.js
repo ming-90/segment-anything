@@ -1,3 +1,4 @@
+import {hoverChange} from './utils.js'
 
 let componentSeq = 0
 
@@ -11,9 +12,11 @@ export class menuComponent extends HTMLElement{
             if(children.hasClass("select-hover")){
                 children.addClass("hover")
                 children.removeClass("select-hover")
+                hoverChange(false)
             }else{
                 children.addClass("select-hover")
                 children.removeClass("hover")
+                hoverChange(true)
             }
             this.componentEvent()
         })

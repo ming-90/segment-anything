@@ -2,7 +2,7 @@
 export let imgShape
 export let tensor
 export let model
-export let isHover = false
+let isHover = false
 let distanceWidth = 320
 let distanceHeight = 150
 
@@ -50,19 +50,17 @@ export const mouseEvents = () => {
         let X = e.pageX - distanceHeight
         let Y = e.pageY - distanceWidth
         if(!isHover) return
-        console.log("mouse move")
         hoverMouseMove()
     })
+}
+
+export const hoverChange = (hover) => {
+    isHover = hover
 }
 
 export const samInit = async () => {
     const MODEL_DIR = "/model/sam_decoder_uint8.onnx";
     model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"));
-
-    // const imageUrl = "frontend/image/default.png";
-    // const response = await fetch(imageUrl);
-    // const data = await response.blob();
-    // imageFile = new File([data], "default.png", { type: 'image/png' });
 
     const IMAGE_EMBEDDING = "/model/embedding.npy";
     NumpyLoader.ajax(IMAGE_EMBEDDING, function (e) {
