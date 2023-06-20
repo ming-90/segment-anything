@@ -24,8 +24,7 @@ app.add_middleware(
 
 configs = dict(
     checkpoint_path=os.path.join("checkpoint"),
-    # checkpoint_name="sam_vit_h_4b8939.pth",
-    checkpoint_name="sam_hq_vit_l.pth",
+    checkpoint_name="sam_vit_h_4b8939.pth",
     checkpoint_url="https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth",
     model_type="default",
 )

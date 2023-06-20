@@ -1,8 +1,4 @@
-
-export let imgShape
-export let tensor
-export let model
-let isHover = false
+let imgShape
 let distanceWidth = 320
 let distanceHeight = 150
 
@@ -10,6 +6,10 @@ export const imageReset = () => {
     let today = new Date();
     $("#img").attr("src", "/client/image/default.png?ver=" + today.getSeconds() )
     resizeImage()
+}
+
+export const distanceSize = () => {
+    return [distanceHeight, distanceWidth]
 }
 
 const resizeImage = () => {
@@ -37,62 +37,6 @@ const resizeImage = () => {
         $("#objectSvg").css("width", $("#img").css("width").replace("px", ""))
         $("#objectSvg").css("height", $("#img").css("height").replace("px", ""))
     }
-}
-
-export const mouseEvents = () => {
-    $("body").on("mouseup", function(e){
-        let X = e.pageX - distanceHeight
-        let Y = e.pageY - distanceWidth
-        console.log("mouse up")
-    })
-
-    $("body").on("mousemove", function(e){
-        let X = e.pageX - distanceHeight
-        let Y = e.pageY - distanceWidth
-        if(!isHover) return
-        hoverMouseMove()
-    })
-}
-
-export const hoverChange = (hover) => {
-    isHover = hover
-}
-
-export const samInit = async () => {
-    const MODEL_DIR = "/model/sam_decoder_uint8.onnx";
-    model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"));
-
-    const IMAGE_EMBEDDING = "/model/embedding.npy";
-    NumpyLoader.ajax(IMAGE_EMBEDDING, function (e) {
-        tensor = new ort.Tensor("float32", e.data, e.shape);
-        console.log("image embedding loaded")
-    })
-}
-
-const hoverMouseMove = async (coor) => {
-    if (!isHover) return
-    const { height, width, samScale } = handleImageScale();
-    let modelScale = {
-        samScale: samScale,
-        height: height,
-        width: width
-    }
-    let click = {
-        x: coor[0],
-        y: coor[1],
-        clickType: 1
-    }
-    let clicks = [click]
-
-    const feeds = modelData({
-        clicks,
-        tensor,
-        modelScale,
-    });
-    if (feeds === undefined) return
-    const results = await model.run(feeds)
-    const output = results[model.outputNames[0]]
-    onnxMaskToImage(output.data, output.dims[2], output.dims[3])
 }
 
 window.addEventListener(`resize`, resizeImage);
