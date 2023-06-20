@@ -22,7 +22,7 @@ HAS_MASK_INPUT = np.zeros(1, dtype=np.float32)
 sess_options = ort.SessionOptions()
 sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
 sess_options.intra_op_num_threads = min(8, multiprocessing.cpu_count() // 2)
-ort_sess = ort.InferenceSession("sam_onnx_quantized.onnx", sess_options)
+ort_sess = ort.InferenceSession("decoder/sam_onnx_quantized.onnx", sess_options)
 
 ####################
 # Functions

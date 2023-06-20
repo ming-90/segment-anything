@@ -17,7 +17,6 @@ export const mouseEvents = () => {
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
         if(!isHover) return
-        console.log(X, Y)
         hoverMouseMove([X, Y])
     })
 }
@@ -27,7 +26,7 @@ export const hoverChange = (hover) => {
 }
 
 export const samInit = async () => {
-    const MODEL_DIR = "/model/sam_onnx_quantized.onnx";
+    const MODEL_DIR = "/decoder/sam_onnx_quantized.onnx";
     model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"));
 
     const IMAGE_EMBEDDING = "/model/embedding.npy";
