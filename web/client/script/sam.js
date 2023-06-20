@@ -4,19 +4,20 @@ let isHover = false
 let model
 let imgShape
 let tensor
-let distanceHeight, distanceWidth = distanceSize()
+let [distanceHeight, distanceWidth] = distanceSize()
 
 export const mouseEvents = () => {
     $("body").on("mouseup", function(e){
-        let X = e.pageX - distanceHeight
-        let Y = e.pageY - distanceWidth
+        let X = e.pageX - distanceWidth
+        let Y = e.pageY - distanceHeight
         console.log("mouse up")
     })
 
     $("body").on("mousemove", function(e){
-        let X = e.pageX - distanceHeight
-        let Y = e.pageY - distanceWidth
+        let X = e.pageX - distanceWidth
+        let Y = e.pageY - distanceHeight
         if(!isHover) return
+        console.log(X, Y)
         hoverMouseMove([X, Y])
     })
 }
@@ -49,6 +50,7 @@ const hoverMouseMove = async (coor) => {
         y: coor[1],
         clickType: 1
     }
+    console.log("click: ", click)
     let clicks = [click]
 
     const feeds = modelData({
@@ -127,8 +129,8 @@ const modelData = ({ clicks, tensor, modelScale }) => {
         image_embeddings: imageEmbedding,
         point_coords: pointCoordsTensor,
         point_labels: pointLabelsTensor,
-        orig_im_size: imageSizeTensor,
         mask_input: maskInput,
         has_mask_input: hasMaskInput,
+        orig_im_size: imageSizeTensor,
     };
 };
