@@ -1,4 +1,4 @@
-import {distanceSize} from "./utils.js"
+import {distanceSize, drawCircle} from "./utils.js"
 import {onnxMaskToImage} from "./maskUtils.js"
 let isHover = false
 let model
@@ -10,7 +10,16 @@ export const mouseEvents = () => {
     $("body").on("mouseup", function(e){
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
-        console.log("mouse up")
+        console.log(X, Y)
+        let info = {
+            name:"dot",
+            id:"dot",
+            x:X,
+            y:Y,
+            fill:"#ff0000",
+            r:"4"
+        }
+        drawCircle(info)
     })
 
     $("body").on("mousemove", function(e){

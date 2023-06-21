@@ -39,4 +39,26 @@ const resizeImage = () => {
     }
 }
 
+export const drawCircle = (info) => {
+    let tagString =
+        `<circle
+            name='${info.name}'
+            id='${info.id}'
+            cx='${info.x}'
+            cy='${info.y}'
+            fill='${info.fill}'
+            r='${info.r}'
+        />`
+    document.getElementById('objectSvg').appendChild(parseSVG(tagString));
+}
+
+const parseSVG = (s) => {
+    let div= document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+    div.innerHTML= '<svg xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
+    let frag= document.createDocumentFragment();
+    while (div.firstChild.firstChild)
+        frag.appendChild(div.firstChild.firstChild);
+    return frag;
+}
+
 window.addEventListener(`resize`, resizeImage);
