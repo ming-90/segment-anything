@@ -65,3 +65,4 @@ const parseSVG = (s) => {
 }
 
 window.addEventListener(`resize`, resizeImage);
+$(document).on('contextmenu', function() { return false; }); // 기본 우측키 삭제
