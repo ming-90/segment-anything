@@ -8,8 +8,16 @@ let [distanceHeight, distanceWidth] = distanceSize()
 
 export const mouseEvents = () => {
     $("body").on("mouseup", function(e){
+        if(!isHover) return
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
+        if ((e.button == 2) || (e.which == 3)) {
+            // Mouse right button
+            mouseClickType = "right";
+        } else if((e.button == 0)) {
+            // Mouse left button
+            mouseClickType = "left";
+        }
         let info = {
             name:"dot",
             id:"dot",
@@ -22,9 +30,9 @@ export const mouseEvents = () => {
     })
 
     $("body").on("mousemove", function(e){
+        if(!isHover) return
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
-        if(!isHover) return
         hoverMouseMove([X, Y])
     })
 }
@@ -57,7 +65,6 @@ const hoverMouseMove = async (coor) => {
         y: coor[1],
         clickType: 1
     }
-    console.log("click: ", click)
     let clicks = [click]
 
     const feeds = modelData({

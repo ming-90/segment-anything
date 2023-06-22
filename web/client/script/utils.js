@@ -27,8 +27,6 @@ const resizeImage = () => {
     const less_width = image_frame_width - img_width
     const less_height = image_frame_height - img_height
 
-    console.log($("#img").css("width").replace("px", ""))
-    console.log($("#img").css("height").replace("px", ""))
     if (less_width < less_height) {
         $("#img").css("width", image_frame_width - 100)
         $("#img").css("height", "")

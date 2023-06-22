@@ -3,9 +3,6 @@ import {hoverChange} from './sam.js'
 let componentSeq = 0
 
 export class menuComponent extends HTMLElement{
-    componentEvent(){
-        console.log("ABBB")
-    }
     connectedCallback(){
         $(this).on("click", function(){
             let children = $(this).children()
