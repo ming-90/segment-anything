@@ -10,7 +10,6 @@ export const mouseEvents = () => {
     $("body").on("mouseup", function(e){
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
-        console.log(X, Y)
         let info = {
             name:"dot",
             id:"dot",
