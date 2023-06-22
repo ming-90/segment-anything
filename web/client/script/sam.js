@@ -5,6 +5,8 @@ let model
 let imgShape
 let tensor
 let [distanceHeight, distanceWidth] = distanceSize()
+let lefts = []
+let rights = []
 
 export const samInit = async () => {
     const MODEL_DIR = "/decoder/sam_onnx_quantized.onnx";
@@ -17,24 +19,11 @@ export const samInit = async () => {
     })
 }
 
-export const mouseEvents = () => {
-    $("body").on("mouseup", function(e){
-        if(!isHover) return
+export const mouseEvents =  () => {
+    $("body").on("mouseup", async function(e){
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
-        let fill = "#0000ff"
-        if((e.button == 0)) {
-            fill = "#ff0000"
-        }
-        let info = {
-            name:"dot",
-            id:"dot",
-            x:X,
-            y:Y,
-            fill:fill,
-            r:"4"
-        }
-        drawCircle(info)
+        mouseClick(e, [X, Y])
     })
 
     $("body").on("mousemove", function(e){
@@ -48,6 +37,38 @@ export const mouseEvents = () => {
 export const hoverChange = (hover) => {
     isHover = hover
     if(!hover) clearMask()
+}
+
+const mouseClick = async (e, coor) => {
+    let fill = "#0000ff"
+    if((e.button == 0)) {
+        fill = "#ff0000"
+        lefts.push({
+            x: coor[0],
+            y: coor[1],
+            clickType: 1
+        })
+    }else{
+        fill = "#0000ff"
+        rights.push({
+            x: coor[0],
+            y: coor[1],
+            clickType: 0
+        })
+    }
+    let clicks = lefts.concat(rights)
+    await run(clicks)
+
+    let info = {
+        name:"dot",
+        id:"dot",
+        x: coor[0],
+        y: coor[1],
+        fill:fill,
+        r:"4"
+    }
+    drawCircle(info)
+    isHover = false
 }
 
 const hoverMouseMove = async (coor) => {

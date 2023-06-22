@@ -49,4 +49,6 @@ export const clearMask = () => {
 	const maskCtx = maskCanvas.getContext("2d")
 
   maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height)
+
+  $("circle").remove()
 }
