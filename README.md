@@ -12,13 +12,17 @@ I implemented the click and hover of this model using gradio and web. And I've d
 - Create Docker compose
 
 ## How to use
-### Gradio run
-```bash
-make gradio
-```
 ### Server run
 ```bash
-make server
+make run-server
+```
+### Gradio run
+```bash
+make run-gradio
+```
+### Web run
+```bash
+make run-web
 ```
 
 ## References
