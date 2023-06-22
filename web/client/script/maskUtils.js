@@ -43,3 +43,10 @@ export const onnxMaskToImage = (input, width, height) =>  {
   console.log("mask to iamge :", (new Date() - start) / 1000)
   return image
 }
+
+export const clearMask = () => {
+  const maskCanvas = document.getElementById("maskImg")
+	const maskCtx = maskCanvas.getContext("2d")
+
+  maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height)
+}

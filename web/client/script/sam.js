@@ -1,29 +1,37 @@
 import {distanceSize, drawCircle} from "./utils.js"
-import {onnxMaskToImage} from "./maskUtils.js"
+import {onnxMaskToImage, clearMask} from "./maskUtils.js"
 let isHover = false
 let model
 let imgShape
 let tensor
 let [distanceHeight, distanceWidth] = distanceSize()
 
+export const samInit = async () => {
+    const MODEL_DIR = "/decoder/sam_onnx_quantized.onnx";
+    model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"));
+
+    const IMAGE_EMBEDDING = "/model/embedding.npy";
+    NumpyLoader.ajax(IMAGE_EMBEDDING, function (e) {
+        tensor = new ort.Tensor("float32", e.data, e.shape);
+        console.log("image embedding loaded")
+    })
+}
+
 export const mouseEvents = () => {
     $("body").on("mouseup", function(e){
         if(!isHover) return
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
-        if ((e.button == 2) || (e.which == 3)) {
-            // Mouse right button
-            mouseClickType = "right";
-        } else if((e.button == 0)) {
-            // Mouse left button
-            mouseClickType = "left";
+        let fill = "#0000ff"
+        if((e.button == 0)) {
+            fill = "#ff0000"
         }
         let info = {
             name:"dot",
             id:"dot",
             x:X,
             y:Y,
-            fill:"#ff0000",
+            fill:fill,
             r:"4"
         }
         drawCircle(info)
@@ -39,34 +47,27 @@ export const mouseEvents = () => {
 
 export const hoverChange = (hover) => {
     isHover = hover
-}
-
-export const samInit = async () => {
-    const MODEL_DIR = "/decoder/sam_onnx_quantized.onnx";
-    model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"));
-
-    const IMAGE_EMBEDDING = "/model/embedding.npy";
-    NumpyLoader.ajax(IMAGE_EMBEDDING, function (e) {
-        tensor = new ort.Tensor("float32", e.data, e.shape);
-        console.log("image embedding loaded")
-    })
+    if(!hover) clearMask()
 }
 
 const hoverMouseMove = async (coor) => {
     if (!isHover) return
-    const { height, width, samScale } = handleImageScale();
-    let modelScale = {
-        samScale: samScale,
-        height: height,
-        width: width
-    }
     let click = {
         x: coor[0],
         y: coor[1],
         clickType: 1
     }
     let clicks = [click]
+    await run(clicks)
+}
 
+const run = async (clicks) => {
+    const { height, width, samScale } = handleImageScale();
+    let modelScale = {
+        samScale: samScale,
+        height: height,
+        width: width
+    }
     const feeds = modelData({
         clicks,
         tensor,

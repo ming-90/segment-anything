@@ -15,7 +15,6 @@ export class menuComponent extends HTMLElement{
                 children.removeClass("hover")
                 hoverChange(true)
             }
-            this.componentEvent()
         })
         this.innerHTML = `
         <div class="box button-group hover" name="menu_button">
