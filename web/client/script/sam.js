@@ -1,6 +1,6 @@
 import {distanceSize, drawCircle} from "./utils.js"
 import {onnxMaskToImage, clearMask} from "./maskUtils.js"
-let isHover = false
+let drawMode = 0        // 0: default, 1: hover, 2: click
 let model
 let imgShape
 let tensor
@@ -21,21 +21,31 @@ export const samInit = async () => {
 
 export const mouseEvents =  () => {
     $("body").on("mouseup", async function(e){
+        if(drawMode == 0) return
+        if(drawMode == 1) drawMode = 2
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
         mouseClick(e, [X, Y])
     })
 
     $("body").on("mousemove", function(e){
-        if(!isHover) return
+        if(drawMode != 1) return
         let X = e.pageX - distanceWidth
         let Y = e.pageY - distanceHeight
         hoverMouseMove([X, Y])
     })
+
+    $("body").on("keydown", function(e) {
+        if(e.code == "Space"){
+
+        }
+    })
 }
 
+
+
 export const hoverChange = (hover) => {
-    isHover = hover
+    drawMode = hover
     if(!hover) clearMask()
 }
 
@@ -68,11 +78,10 @@ const mouseClick = async (e, coor) => {
         r:"4"
     }
     drawCircle(info)
-    isHover = false
 }
 
 const hoverMouseMove = async (coor) => {
-    if (!isHover) return
+    if (drawMode != 1) return
     let click = {
         x: coor[0],
         y: coor[1],
