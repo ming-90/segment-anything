@@ -9,12 +9,12 @@ let lefts = []
 let rights = []
 
 export const samInit = async () => {
-    const MODEL_DIR = "/decoder/sam_onnx_quantized.onnx";
-    model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"));
+    const MODEL_DIR = "/decoder/sam_onnx_quantized.onnx"
+    model = await ort.InferenceSession.create(MODEL_DIR).then(console.log("model loaded"))
 
-    const IMAGE_EMBEDDING = "/model/embedding.npy";
+    const IMAGE_EMBEDDING = "/model/embedding.npy"
     NumpyLoader.ajax(IMAGE_EMBEDDING, function (e) {
-        tensor = new ort.Tensor("float32", e.data, e.shape);
+        tensor = new ort.Tensor("float32", e.data, e.shape)
         console.log("image embedding loaded")
     })
 }
@@ -43,9 +43,9 @@ export const mouseEvents =  () => {
                     points: [contours[i]].toString(),
                     fill: "#aa000f"
                 }
-                drawPolygon(info);
+                drawPolygon(info)
             }
-            $("circle").remove();
+            $("circle").remove()
         }
         lefts = []
         rights = []
@@ -54,21 +54,22 @@ export const mouseEvents =  () => {
 }
 
 const findContour = (smallRegionThreshold = 50) => {
-    let src = cv.imread('maskImg');
-    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
-    let contours = new cv.MatVector();
-    let hierarchy = new cv.Mat();
+    let src = cv.imread('maskImg')
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0)
+    let contours = new cv.MatVector()
+    let hierarchy = new cv.Mat()
     // You can try more different parameters
-    cv.findContours(src, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+    cv.findContours(src, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
-    let validContours = [];
+    let validContours = []
     for (let i = 0; i < contours.size(); i++) {
-        let area = cv.contourArea(contours.get(i));
+        let area = cv.contourArea(contours.get(i))
         if (area > smallRegionThreshold) {
-            validContours.push(new Uint32Array(contours.get(i).data32S));
+            validContours.push(new Uint32Array(contours.get(i).data32S))
         }
     }
-    src.delete(); hierarchy.delete();
+    src.delete()
+    hierarchy.delete()
     return validContours
 }
 
@@ -120,7 +121,7 @@ const hoverMouseMove = async (coor) => {
 }
 
 const run = async (clicks) => {
-    const { height, width, samScale } = handleImageScale();
+    const { height, width, samScale } = handleImageScale()
     let modelScale = {
         samScale: samScale,
         height: height,
@@ -130,7 +131,7 @@ const run = async (clicks) => {
         clicks,
         tensor,
         modelScale,
-    });
+    })
     if (feeds === undefined) return
     const results = await model.run(feeds)
     const output = results[model.outputNames[0]]
@@ -148,55 +149,55 @@ const handleImageScale = () => {
 }
 
 const modelData = ({ clicks, tensor, modelScale }) => {
-    const imageEmbedding = tensor;
-    let pointCoords;
-    let pointLabels;
-    let pointCoordsTensor;
-    let pointLabelsTensor;
+    const imageEmbedding = tensor
+    let pointCoords
+    let pointLabels
+    let pointCoordsTensor
+    let pointLabelsTensor
 
     // Check there are input click prompts
     if (clicks) {
-        let n = clicks.length;
+        let n = clicks.length
 
         // If there is no box input, a single padding point with
         // label -1 and coordinates (0.0, 0.0) should be concatenated
         // so initialize the array to support (n + 1) points.
-        pointCoords = new Float32Array(2 * (n + 1));
-        pointLabels = new Float32Array(n + 1);
+        pointCoords = new Float32Array(2 * (n + 1))
+        pointLabels = new Float32Array(n + 1)
 
         // Add clicks and scale to what SAM expects
         for (let i = 0; i < n; i++) {
-            pointCoords[2 * i] = clicks[i].x * modelScale.samScale;
-            pointCoords[2 * i + 1] = clicks[i].y * modelScale.samScale;
-            pointLabels[i] = clicks[i].clickType;
+            pointCoords[2 * i] = clicks[i].x * modelScale.samScale
+            pointCoords[2 * i + 1] = clicks[i].y * modelScale.samScale
+            pointLabels[i] = clicks[i].clickType
         }
 
         // Add in the extra point/label when only clicks and no box
         // The extra point is at (0, 0) with label -1
-        pointCoords[2 * n] = 0.0;
-        pointCoords[2 * n + 1] = 0.0;
-        pointLabels[n] = -1.0;
+        pointCoords[2 * n] = 0.0
+        pointCoords[2 * n + 1] = 0.0
+        pointLabels[n] = -1.0
 
         // Create the tensor
-        pointCoordsTensor = new ort.Tensor("float32", pointCoords, [1, n + 1, 2]);
-        pointLabelsTensor = new ort.Tensor("float32", pointLabels, [1, n + 1]);
+        pointCoordsTensor = new ort.Tensor("float32", pointCoords, [1, n + 1, 2])
+        pointLabelsTensor = new ort.Tensor("float32", pointLabels, [1, n + 1])
     }
     const imageSizeTensor = new ort.Tensor("float32", [
         modelScale.height,
         modelScale.width,
-    ]);
+    ])
 
     if (pointCoordsTensor === undefined || pointLabelsTensor === undefined)
-        return;
+        return
 
     // There is no previous mask, so default to an empty tensor
     const maskInput = new ort.Tensor(
         "float32",
         new Float32Array(256 * 256),
         [1, 1, 256, 256]
-    );
+    )
     // There is no previous mask, so default to 0
-    const hasMaskInput = new ort.Tensor("float32", [0]);
+    const hasMaskInput = new ort.Tensor("float32", [0])
 
     return {
         image_embeddings: imageEmbedding,
@@ -205,5 +206,5 @@ const modelData = ({ clicks, tensor, modelScale }) => {
         mask_input: maskInput,
         has_mask_input: hasMaskInput,
         orig_im_size: imageSizeTensor,
-    };
-};
+    }
+}
