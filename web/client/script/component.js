@@ -27,9 +27,7 @@ export class menuComponent extends HTMLElement{
                 </div>
             </div>
             <div>
-                <p class="info-text">
-                    ${this.attributes.description.value}
-                </p>
+                <p class="info-text">${this.attributes.description.value}</p>
             </div>
             <div class=parameters> </div>
         </div>

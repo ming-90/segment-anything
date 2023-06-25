@@ -17,6 +17,7 @@ export const samInit = async () => {
         tensor = new ort.Tensor("float32", e.data, e.shape)
         console.log("image embedding loaded")
     })
+    drawMode = 0
 }
 
 export const mouseEvents =  () => {
