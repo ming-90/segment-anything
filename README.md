@@ -11,7 +11,7 @@ https://github.com/ming-90/segment-anything/assets/48505409/29cf2937-410b-4718-8
 ## Task
 - Implementation Segment Anything Model image embedding API (Done)
 - Implementation Segment Anything Model using Gradio (Done)
-- Create frontend UI for SAM ( Hover, Click inference )
+- Create frontend UI for SAM ( Hover, Click inference ) (Done)
 - Create triton and inference server
 - Dockerize server
 - Create Docker compose
@@ -24,10 +24,12 @@ make run-server
 ### Gradio run
 ```bash
 make run-gradio
+http://localhost:7860
 ```
 ### Web run
 ```bash
 make run-web
+http://localhost:8889
 ```
 
 ## References
