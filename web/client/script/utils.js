@@ -53,6 +53,28 @@ export const drawCircle = (info) => {
     document.getElementById('objectSvg').appendChild(parseSVG(tagString));
 }
 
+export const drawPolygon = (info) => {
+    let tagString =
+        `<polygon
+            id='${info.id}'
+            name='${info.name}'
+            points='${info.points}'
+            style='
+                stroke:#ff1105;
+                fill:${randomItem()};
+                fill-opacity:0.6'
+        />`
+    document.getElementById('objectSvg').appendChild(parseSVG(tagString));
+}
+
+const randomItem = () => {
+
+    const r = Math.round(Math.random() * 255)
+    const g = Math.round(Math.random() * 255)
+    const b = Math.round(Math.random() * 255)
+    return `rgb(${r},${g},${b})`
+}
+
 const parseSVG = (s) => {
     let div= document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
     div.innerHTML= '<svg xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';

@@ -1,4 +1,4 @@
-import {distanceSize, drawCircle} from "./utils.js"
+import {distanceSize, drawCircle, drawPolygon} from "./utils.js"
 import {onnxMaskToImage, clearMask} from "./maskUtils.js"
 let drawMode = 0        // 0: default, 1: hover, 2: click
 let model
@@ -37,12 +37,40 @@ export const mouseEvents =  () => {
 
     $("body").on("keydown", function(e) {
         if(e.code == "Space"){
-
+            let contours = findContour()
+            for (let i = 0; i < contours.length; i++) {
+                let info = {
+                    points: [contours[i]].toString(),
+                    fill: "#aa000f"
+                }
+                drawPolygon(info);
+            }
+            $("circle").remove();
         }
+        lefts = []
+        rights = []
+        drawMode = 1
     })
 }
 
+const findContour = (smallRegionThreshold = 50) => {
+    let src = cv.imread('maskImg');
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+    let contours = new cv.MatVector();
+    let hierarchy = new cv.Mat();
+    // You can try more different parameters
+    cv.findContours(src, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
 
+    let validContours = [];
+    for (let i = 0; i < contours.size(); i++) {
+        let area = cv.contourArea(contours.get(i));
+        if (area > smallRegionThreshold) {
+            validContours.push(new Uint32Array(contours.get(i).data32S));
+        }
+    }
+    src.delete(); hierarchy.delete();
+    return validContours
+}
 
 export const hoverChange = (hover) => {
     drawMode = hover
