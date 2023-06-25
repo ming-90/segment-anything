@@ -5,7 +5,7 @@ let distanceHeight = 150
 $("img").on("load", function() { resizeImage() })
 
 export const imageReset = () => {
-    let today = new Date();
+    let today = new Date()
     $("#img").attr("src", "/client/image/default.png?ver=" + today.getSeconds())
 }
 
@@ -50,7 +50,7 @@ export const drawCircle = (info) => {
             fill='${info.fill}'
             r='${info.r}'
         />`
-    document.getElementById('objectSvg').appendChild(parseSVG(tagString));
+    document.getElementById('objectSvg').appendChild(parseSVG(tagString))
 }
 
 export const drawPolygon = (info) => {
@@ -60,11 +60,11 @@ export const drawPolygon = (info) => {
             name='${info.name}'
             points='${info.points}'
             style='
-                stroke:#ff1105;
-                fill:${randomItem()};
+                stroke:#ff1105
+                fill:${randomItem()}
                 fill-opacity:0.6'
         />`
-    document.getElementById('objectSvg').appendChild(parseSVG(tagString));
+    document.getElementById('objectSvg').appendChild(parseSVG(tagString))
 }
 
 const randomItem = () => {
@@ -76,13 +76,21 @@ const randomItem = () => {
 }
 
 const parseSVG = (s) => {
-    let div= document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
-    div.innerHTML= '<svg xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
-    let frag= document.createDocumentFragment();
+    let div= document.createElementNS('http://www.w3.org/1999/xhtml', 'div')
+    div.innerHTML= '<svg xmlns="http://www.w3.org/2000/svg">'+s+'</svg>'
+    let frag= document.createDocumentFragment()
     while (div.firstChild.firstChild)
-        frag.appendChild(div.firstChild.firstChild);
-    return frag;
+        frag.appendChild(div.firstChild.firstChild)
+    return frag
 }
 
-window.addEventListener(`resize`, resizeImage);
-$(document).on('contextmenu', function() { return false; }); // 기본 우측키 삭제
+export const changeImage = async (e) => {
+    let file = e.target.files[0]
+	let url = window.URL.createObjectURL(file)
+    // change image in front page
+    $("#img").attr("src", url)
+    $(".select-hover").removeClass("select-hover")
+}
+
+window.addEventListener(`resize`, resizeImage)
+$(document).on('contextmenu', function() { return false }) // 기본 우측키 삭제

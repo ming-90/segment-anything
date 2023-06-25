@@ -208,3 +208,34 @@ const modelData = ({ clicks, tensor, modelScale }) => {
         orig_im_size: imageSizeTensor,
     }
 }
+
+const changeImageEvent = async () => {
+    modalOpen()
+    // send image to server
+    let formData = new FormData()
+    formData.append("image", imageFile, "image.jpg")
+    await fetch("/sam/image_embedding", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            accept: "application/json",
+        }
+    }).then((response) => response.json())
+        .then((data) => {
+            let image_embedding = data.img_embedding
+            const binaryString = atob(image_embedding);
+            // Create a DataView to read the binary data as float32 values
+            const dataView = new DataView(new ArrayBuffer(binaryString.length));
+            for (let i = 0; i < binaryString.length; i++) {
+                dataView.setUint8(i, binaryString.charCodeAt(i));
+            }
+            // Read the float32 values from the DataView
+            const float32Array = new Float32Array(dataView.buffer);
+            tensor = new ort.Tensor("float32", float32Array, data.img_embedding_size);
+            modalClose()
+        }).catch((e) => {
+            console.log(e)
+            modalClose()
+            alert('사용 할 수 없는 이미지 입니다.')
+        })
+}
