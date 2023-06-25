@@ -4,7 +4,7 @@
 I implemented the click and hover of this model using gradio and web. And I've dockerized it so you can quickly test it out.
 
 ## Demo video
-Segment-Everything web demo[youtube](https://youtu.be/4_JpPuxxoMw)
+Segment-Everything web demo ([youtube](https://youtu.be/4_JpPuxxoMw))
 
 https://github.com/ming-90/segment-anything/assets/48505409/29cf2937-410b-4718-85bc-dd602e831863
 
