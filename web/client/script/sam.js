@@ -127,6 +127,7 @@ const run = async (clicks) => {
         height: height,
         width: width
     }
+    console.log(tensor)
     const feeds = modelData({
         clicks,
         tensor,
@@ -230,7 +231,7 @@ const changeImageEvent = async (imageFile) => {
         }
     }).then((response) => response.json())
         .then((data) => {
-            let image_embedding = data.img_embedding
+            let image_embedding = data.image_embedding
             const binaryString = atob(image_embedding);
             // Create a DataView to read the binary data as float32 values
             const dataView = new DataView(new ArrayBuffer(binaryString.length));
@@ -239,7 +240,7 @@ const changeImageEvent = async (imageFile) => {
             }
             // Read the float32 values from the DataView
             const float32Array = new Float32Array(dataView.buffer);
-            tensor = new ort.Tensor("float32", float32Array, data.img_embedding_size);
+            tensor = new ort.Tensor("float32", float32Array, data.image_embedding_shape);
         }).catch((e) => {
             console.log(e)
             alert('사용 할 수 없는 이미지 입니다.')

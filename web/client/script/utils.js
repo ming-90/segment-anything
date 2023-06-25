@@ -60,9 +60,9 @@ export const drawPolygon = (info) => {
             name='${info.name}'
             points='${info.points}'
             style='
-                stroke:#ff1105
-                fill:${randomItem()}
-                fill-opacity:0.6'
+                stroke:#ff1105;
+                fill:${randomItem()};
+                fill-opacity:0.6';
         />`
     document.getElementById('objectSvg').appendChild(parseSVG(tagString))
 }

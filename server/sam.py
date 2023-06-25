@@ -60,6 +60,7 @@ class SAMImageEncoder():
         except Exception as e:
             logger.error(e)
 
+        logger.info("End image embedding")
         return self._postprocess(image_embedding)
 
     def _preprocess(self, inputs: Dict[str, Any]) -> torch.Tensor:
