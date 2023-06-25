@@ -1,5 +1,5 @@
-import {imageReset, changeImage} from './utils.js'
-import {samInit, mouseEvents} from './sam.js'
+import {imageReset} from './utils.js'
+import {samInit, mouseEvents, changeImage} from './sam.js'
 import {menuComponent} from "./component.js";
 
 mouseEvents()

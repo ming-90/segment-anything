@@ -50,7 +50,7 @@ def healthcheck() -> bool:
     return True
 
 # pylint: disable=invalid-name,unused-argument
-@app.get("/image-embedding", response_model=SegmentationImageEmbeddingResponse)
+@app.post("/image-embedding", response_model=SegmentationImageEmbeddingResponse)
 async def image_embedding(
     file: UploadFile
 ) -> SegmentationImageEmbeddingResponse:

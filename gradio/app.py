@@ -69,7 +69,7 @@ def image_click(
 
 def get_image_embedding(image: np.ndarray):
     image_bytes = cv2.imencode(".jpg", image)[1].tobytes()
-    response = requests.get(
+    response = requests.post(
         f'{API_URL}/image-embedding',
         files={"file":image_bytes},
         headers={"accept": "application/json"}

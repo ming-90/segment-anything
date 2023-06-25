@@ -84,13 +84,5 @@ const parseSVG = (s) => {
     return frag
 }
 
-export const changeImage = async (e) => {
-    let file = e.target.files[0]
-	let url = window.URL.createObjectURL(file)
-    // change image in front page
-    $("#img").attr("src", url)
-    $(".select-hover").removeClass("select-hover")
-}
-
 window.addEventListener(`resize`, resizeImage)
 $(document).on('contextmenu', function() { return false }) // 기본 우측키 삭제
