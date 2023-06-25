@@ -3,6 +3,9 @@
 [segment anything model (SAM)](https://github.com/facebookresearch/segment-anything) that can reduce the resources of the server by meta. You can get image embedding in a single inference and do all the segmentation of the image on the client side.
 I implemented the click and hover of this model using gradio and web. And I've dockerized it so you can quickly test it out.
 
+## Demo video
+[![segment everything](http://img.youtube.com/vi/4_JpPuxxoMw/0.jpg)](https://youtu.be/4_JpPuxxoMw)
+
 ## Task
 - Implementation Segment Anything Model image embedding API (Done)
 - Implementation Segment Anything Model using Gradio (Done)
