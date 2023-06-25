@@ -4,7 +4,9 @@
 I implemented the click and hover of this model using gradio and web. And I've dockerized it so you can quickly test it out.
 
 ## Demo video
-[![segment everything](http://img.youtube.com/vi/4_JpPuxxoMw/0.jpg)](https://youtu.be/4_JpPuxxoMw)
+[Segment-Everything web demo](https://youtu.be/4_JpPuxxoMw)
+
+https://github.com/ming-90/segment-anything/assets/48505409/29cf2937-410b-4718-85bc-dd602e831863
 
 ## Task
 - Implementation Segment Anything Model image embedding API (Done)
